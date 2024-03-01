@@ -14,15 +14,46 @@ spec:
     spec:
       containers:
       - name: my-web-app
-        image: nginx:latest
+        image: argo-gitops/nginx:latest
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.1"
+            memory: "256Mi"
   strategy:
     canary:
       steps:
-      - setWeight: 25
-        pause: {}
+      - setWeight: 10
+        pause:
+          duration: 60s
+      - setWeight: 20
+        pause:
+          duration: 60s
+      - setWeight: 30
+        pause:
+          duration: 60s
+      - setWeight: 40
+        pause:
+          duration: 60s
       - setWeight: 50
-        pause: {}
+        pause:
+          duration: 60s
+      # Add more steps as necessary
+      - setWeight: 60
+        pause:
+          duration: 60s
+      - setWeight: 70
+        pause:
+          duration: 60s
+      - setWeight: 80
+        pause:
+          duration: 60s
+      - setWeight: 90
+        pause:
+          duration: 60s
       - setWeight: 100
         pause: {}
